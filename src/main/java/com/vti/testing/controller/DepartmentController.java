@@ -2,6 +2,7 @@ package com.vti.testing.controller;
 
 import com.vti.testing.dto.DepartmentDTO;
 import com.vti.testing.entity.Department;
+import com.vti.testing.form.DepartmentFilterForm;
 import com.vti.testing.service.IDepartmentService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -21,8 +22,8 @@ public class DepartmentController {
     private ModelMapper modelMapper;
 
     @GetMapping
-    public List<DepartmentDTO> getAll() {
-        List<Department> departments = departmentService.getAll();
+    public List<DepartmentDTO> getAll(DepartmentFilterForm form) {
+        List<Department> departments = departmentService.getAll(form);
         return modelMapper.map(departments, new TypeToken<List<DepartmentDTO>>() {
         }.getType());
     }
