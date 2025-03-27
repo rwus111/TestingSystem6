@@ -11,11 +11,13 @@ import org.springframework.data.jpa.domain.Specification;
 public class AccountSpecification {
     private static final String SEARCH = "SEARCH";
     private static final String MIN_ID = "MIN_ID";
+    private static final String MAX_ID = "MAX_ID";
 
     public static Specification<Account> buildWhere(AccountFilterForm form) {
         Specification<Account> whereUsername = new SpecificationImpl(SEARCH, form.getSearch());
         Specification<Account> whereMinId = new SpecificationImpl(MIN_ID, form.getMinId());
-        return Specification.where(whereUsername).and(whereMinId);
+        Specification<Account> whereMaxId = new SpecificationImpl(MAX_ID, form.getMaxId());
+        return Specification.where(whereUsername).and(whereMinId).and(whereMaxId);
     }
 
     private static class SpecificationImpl implements Specification<Account> {
@@ -39,6 +41,9 @@ public class AccountSpecification {
                 case MIN_ID:
                     // id >= value
                     return criteriaBuilder.greaterThanOrEqualTo(root.get("id"), value.toString());
+                case MAX_ID:
+                    // id <= value
+                    return criteriaBuilder.lessThanOrEqualTo(root.get("id"), value.toString());
             }
             return null;
         }
