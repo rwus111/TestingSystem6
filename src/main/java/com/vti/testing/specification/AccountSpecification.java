@@ -10,10 +10,12 @@ import org.springframework.data.jpa.domain.Specification;
 
 public class AccountSpecification {
     private static final String SEARCH = "SEARCH";
+    private static final String MIN_ID = "MIN_ID";
 
     public static Specification<Account> buildWhere(AccountFilterForm form) {
         Specification<Account> whereUsername = new SpecificationImpl(SEARCH, form.getSearch());
-        return Specification.where(whereUsername);
+        Specification<Account> whereMinId = new SpecificationImpl(MIN_ID, form.getMinId());
+        return Specification.where(whereUsername).and(whereMinId);
     }
 
     private static class SpecificationImpl implements Specification<Account> {
@@ -34,6 +36,9 @@ public class AccountSpecification {
                 case SEARCH:
                     // username LIKE "%value%"
                     return criteriaBuilder.like(root.get("username"), "%" + value + "%");
+                case MIN_ID:
+                    // id >= value
+                    return criteriaBuilder.greaterThanOrEqualTo(root.get("id"), value.toString());
             }
             return null;
         }
