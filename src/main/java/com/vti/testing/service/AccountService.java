@@ -18,6 +18,6 @@ public class AccountService implements IAccountService {
     @Override
     public List<Account> getAll(AccountFilterForm form) {
         Specification<Account> where = AccountSpecification.buildWhere(form);
-        return accountRepository.findAll();
+        return accountRepository.findAll(where);
     }
 }
