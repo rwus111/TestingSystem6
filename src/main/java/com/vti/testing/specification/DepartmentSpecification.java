@@ -12,10 +12,12 @@ import java.sql.Date;
 
 public class DepartmentSpecification {
     private static final String MIN_DATE = "MIN_DATE";
+    private static final String MIN_YEAR = "MIN_YEAR";
 
     public static Specification<Department> buildWhere(DepartmentFilterForm form) {
         Specification<Department> whereMinDate = new SpecificationImpl(MIN_DATE, form.getMinDate());
-        return Specification.where(whereMinDate);
+        Specification<Department> whereMinYear = new SpecificationImpl(MIN_YEAR, form.getMinYear());
+        return Specification.where(whereMinDate).and(whereMinYear);
     }
 
     private static class SpecificationImpl implements Specification<Department> {
@@ -38,6 +40,12 @@ public class DepartmentSpecification {
                     return criteriaBuilder.greaterThanOrEqualTo(
                             root.get("createdDate").as(Date.class),
                             (java.util.Date) value
+                    );
+                case MIN_YEAR:
+                    // year(createdDate) >= value
+                    return criteriaBuilder.greaterThanOrEqualTo(
+                            criteriaBuilder.function("year", Integer.class, root.get("createdDate")),
+                            (Integer) value
                     );
             }
             return null;
