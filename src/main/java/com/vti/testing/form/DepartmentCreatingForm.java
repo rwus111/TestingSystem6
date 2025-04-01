@@ -2,6 +2,7 @@ package com.vti.testing.form;
 
 import org.hibernate.validator.constraints.Length;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.PositiveOrZero;
@@ -15,7 +16,7 @@ public class DepartmentCreatingForm {
     private int totalMember;
     @Pattern(regexp = "Dev|Test|ScrumMaster|PM", message = "Type must be Dev, Test, ScrumMaster, PM")
     private String type;
-    private List<Account> accounts;
+    private List<@Valid Account> accounts;
 
     public String getName() {
         return name;
@@ -50,6 +51,8 @@ public class DepartmentCreatingForm {
     }
 
     public static class Account{
+        @NotBlank(message = "Username must not blank")
+        @Length(max = 50, message = "Username's length is max 50 characters")
         private String username;
 
         public String getUsername() {
