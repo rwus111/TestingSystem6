@@ -27,6 +27,7 @@ public class AccountController {
         }.getType());
     }
 
+    // TODO: validate AccountCreatingForm
     @PostMapping
     public void create(@RequestBody AccountCreatingForm form) {
         accountService.createAccount(form);
