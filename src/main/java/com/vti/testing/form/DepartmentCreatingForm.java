@@ -1,5 +1,6 @@
 package com.vti.testing.form;
 
+import com.vti.testing.validation.DepartmentNameNotExists;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.Valid;
@@ -11,6 +12,7 @@ import java.util.List;
 public class DepartmentCreatingForm {
     @NotBlank(message = "Department name must not blank")
     @Length(max = 50, message = "Department name's length is max 50 characters")
+    @DepartmentNameNotExists
     private String name;
     @PositiveOrZero(message = "Total member must be greater than or equal 0")
     private int totalMember;
