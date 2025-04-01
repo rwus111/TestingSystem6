@@ -1,6 +1,6 @@
 package com.vti.testing.entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 public class Account {

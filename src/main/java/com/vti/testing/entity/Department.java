@@ -1,6 +1,6 @@
 package com.vti.testing.entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;

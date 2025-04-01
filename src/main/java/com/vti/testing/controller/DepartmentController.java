@@ -8,12 +8,15 @@ import com.vti.testing.service.IDepartmentService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/departments")
+@Validated
 public class DepartmentController {
     @Autowired
     private IDepartmentService departmentService;
@@ -28,7 +31,7 @@ public class DepartmentController {
     }
 
     @PostMapping
-    public void create(@RequestBody DepartmentCreatingForm form){
+    public void create(@RequestBody @Valid DepartmentCreatingForm form){
         departmentService.createDepartment(form);
     }
 }
