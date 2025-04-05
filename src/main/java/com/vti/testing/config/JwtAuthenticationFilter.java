@@ -1,8 +1,12 @@
 package com.vti.testing.config;
 
+import com.vti.testing.service.AccountService;
+import com.vti.testing.service.IAccountService;
 import com.vti.testing.utils.JwtUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -15,17 +19,20 @@ import java.util.Collections;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+    @Autowired
+    private IAccountService accountService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String jwt = getJwtFromHeader(request);
         if (jwt != null && JwtUtils.validateJwt(jwt)) {
             String username = JwtUtils.getUsername(jwt);
+            User user = (User) accountService.loadUserByUsername(username);
             UsernamePasswordAuthenticationToken authentication =
                     new UsernamePasswordAuthenticationToken(
                             username,
                             null,
-                            Collections.emptyList()
+                            user.getAuthorities()
                     );
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
